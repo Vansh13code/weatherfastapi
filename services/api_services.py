@@ -13,8 +13,8 @@ def append_weather(city: str):
         "city": data["location"]["name"],
         "temperature_c": float(data["current"]["temp_c"]),
         "humidity": float(data["current"]["humidity"]),
-        "wind_kph": float(data["current"]["wind_kph"]),
-        "rainfall": float(data["current"]["precip_mm"])
+        "wind_speed_kmph": float(data["current"]["wind_kph"]),
+        "rainfall_mm": float(data["current"]["precip_mm"])
     }
 
     df = load_data()

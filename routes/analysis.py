@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from services.data_services import load_data
-
+import pandas as pd
 router = APIRouter()
 
 @router.get("/analysis/avg-temp")
@@ -25,7 +25,7 @@ def rainfall():
     df = load_data()
     
     return {
-        "total_rainfall": float(df["rainfall"].sum())
+        "total_rainfall": float(df["rainfall_mm"].sum())
     }
 @router.get("/analysis/humidity")
 def humidity():
@@ -39,9 +39,12 @@ def humidity():
 @router.get("/analysis/moving_averages_and_stats_summary")
 def moving_averages_and_stats_summary():
     df = load_data()
+
     
     df["temp7davg"] = df["temperature_c"].rolling(window=7).mean()
-    
+
+    df_ma = df[["city", "temp7davg"]].dropna()
+
     summary = {
         "temperature": {
             "mean": float(df["temperature_c"].mean()),
@@ -54,11 +57,11 @@ def moving_averages_and_stats_summary():
             "std_dev": float(df["humidity"].std())
         },
         "rainfall": {
-            "total": float(df["rainfall"].sum())
+            "total": float(df["rainfall_mm"].sum())
         }
     }
-    
+
     return {
-        "moving_averages": df[["city", "temp7davg"]].to_dict(orient="records"),
+        "moving_averages": df_ma.to_dict(orient="records"),
         "summary_statistics": summary
     }

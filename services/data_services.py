@@ -1,7 +1,6 @@
-# services/data_service.py
 import pandas as pd
 
-FILE_PATH = "weather.csv"
+FILE_PATH = "weather_data.csv"
 
 def load_data():
     return pd.read_csv(FILE_PATH)
